@@ -22,19 +22,19 @@ namespace Library
         /// <summary>
         /// Загружаемый плагин
         /// </summary>
-        public IDataSource plugin { get; set;}
-        LoaderPlugins loaderPlugins;
+        public IDataSource Plugin { get; set;}
+        LoaderPlugins _loaderPlugins;
         /// <summary>
         /// Инизиализирует компоненты формы <c>FormLoadPlugin</c> и отображает список  плагинов.
         /// </summary>
         /// <param name="plgn">Объект типа <c>IDataSource</c>.</param>
         public FormLoadPlugin(IDataSource plgn)
         {
-            this.plugin = plgn;
+            this.Plugin = plgn;
             InitializeComponent();
-            loaderPlugins = new LoaderPlugins();
-            loaderPlugins.OnError += new EventHandler<EventArgsString>(catchError);
-            radioListBoxPlugins.DataSource = loaderPlugins.GetInstances<IDataSource>();
+            _loaderPlugins = new LoaderPlugins();
+            _loaderPlugins.OnError += new EventHandler<EventArgsString>(catchError);
+            radioListBoxPlugins.DataSource = _loaderPlugins.GetInstances<IDataSource>();
             radioListBoxPlugins.DisplayMember = "NamePlugin";
             SetSelectedItem();
             if (radioListBoxPlugins.Items.Count == 0)
@@ -61,8 +61,8 @@ namespace Library
 
         private void LoadSelectedPlugin()
         {
-            plugin = loaderPlugins.LoadPlugin(((IDataSource)radioListBoxPlugins.SelectedItem).NamePlugin,  (IDataSource)radioListBoxPlugins.SelectedItem);
-            plugin.OnError += new EventHandler<EventArgsString>(catchError);
+            Plugin = _loaderPlugins.LoadPlugin(((IDataSource)radioListBoxPlugins.SelectedItem).NamePlugin,  (IDataSource)radioListBoxPlugins.SelectedItem);
+            Plugin.OnError += new EventHandler<EventArgsString>(catchError);
             WriteToConfig();
             DialogResult = DialogResult.OK;
             this.Close();
@@ -71,7 +71,7 @@ namespace Library
         private void WriteToConfig()
         {
             System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["namePlugin"].Value = plugin.NamePlugin;
+            config.AppSettings.Settings["pluginSelected"].Value = Plugin.NamePlugin;
             config.Save();
             ConfigurationManager.RefreshSection("appSettings");
         }
@@ -94,9 +94,9 @@ namespace Library
 
         private bool CheckLoadedPlugins()
         {
-            if (plugin != null)
+            if (Plugin != null)
             {
-                if (((IDataSource)radioListBoxPlugins.SelectedItem).NamePlugin == ConfigurationManager.AppSettings["namePlugin"])
+                if (((IDataSource)radioListBoxPlugins.SelectedItem).NamePlugin == ConfigurationManager.AppSettings["pluginSelected"])
                     return true;           
             }
             return false;
@@ -104,11 +104,11 @@ namespace Library
 
         private void SetSelectedItem()
         {
-            if (plugin != null)
+            if (Plugin != null)
             {
                 for (int i = 0; i < radioListBoxPlugins.Items.Count; i++)
                 {
-                    if (((IDataSource)radioListBoxPlugins.Items[i]).NamePlugin == ConfigurationManager.AppSettings["namePlugin"])
+                    if (((IDataSource)radioListBoxPlugins.Items[i]).NamePlugin == ConfigurationManager.AppSettings["pluginSelected"])
                     {
                         radioListBoxPlugins.SetSelected(i, true);
                         radioListBoxPlugins.SelectedItem = radioListBoxPlugins.Items[i];

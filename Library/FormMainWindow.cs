@@ -15,6 +15,7 @@ namespace Library
     /// </summary>
     public partial class FormMainWindow : Form
     {
+        Point _point;
         /// <summary>
         /// Инициализирует компоненты формы <c>FormMainWindow</c>.
         /// </summary>
@@ -23,18 +24,17 @@ namespace Library
             InitializeComponent();
         }
 
-        Point point;
         private void ucLibrary1_MouseDown(object sender, MouseEventArgs e)
         {
-            point = new Point(e.X, e.Y);
+            _point = new Point(e.X, e.Y);
         }
 
         private void ucLibrary1_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                this.Left += e.X - point.X;
-                this.Top += e.Y - point.Y;
+                this.Left += e.X - _point.X;
+                this.Top += e.Y - _point.Y;
             }
         }
     }

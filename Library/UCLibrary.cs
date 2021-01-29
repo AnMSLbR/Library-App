@@ -21,10 +21,10 @@ namespace Library
     /// </summary>
     public partial class UCLibrary : UserControl
     {
-        Books books = new Books();
+        Books _books = new Books();
         bool _checkChanges = false;
-        string loadedPluginName;
-        IDataSource plugin;
+        string _loadedPluginName;
+        IDataSource _plugin;
         
         /// <summary>
         /// Инициализирует компоненты пользовательского элемента управления <c>UCLibrary</c>.
@@ -58,14 +58,14 @@ namespace Library
         private void labelLoad_Click(object sender, EventArgs e)
         {
             UpdateListView();
-            loadedPluginName = plugin.NamePlugin;
+            _loadedPluginName = _plugin.NamePlugin;
         }
 
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView.SelectedItems.Count == 1)
             {
-                UpdateInformation(books.BooksList[listView.SelectedIndices[0]]);
+                UpdateInformation(_books.BooksList[listView.SelectedIndices[0]]);
                 btnEdit.Enabled = true;
                 btnDelete.Enabled = true;
             }
@@ -109,12 +109,12 @@ namespace Library
 
         private void Exit()
         {
-            if (_checkChanges == true || (loadedPluginName != ConfigurationManager.AppSettings["namePlugin"] && loadedPluginName != null))
+            if (_checkChanges == true || (_loadedPluginName != ConfigurationManager.AppSettings["pluginSelected"] && _loadedPluginName != null))
             {               
                 DialogResult result = MessageBox.Show("Сохранить изменения?", "Сохранить", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    if (plugin == null)
+                    if (_plugin == null)
                     {
                         MessageBox.Show("Сохранение невозможно, подключите плагин", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         OpenFormLoadPlugin();
@@ -134,18 +134,18 @@ namespace Library
 
         private void OpenFormLoadPlugin()
         {
-            FormLoadPlugin loadPlugin = new FormLoadPlugin(plugin);
+            FormLoadPlugin loadPlugin = new FormLoadPlugin(_plugin);
             DialogResult result = loadPlugin.ShowDialog();
             if (result == DialogResult.OK)
             {
-                plugin = loadPlugin.plugin;
+                _plugin = loadPlugin.Plugin;
                 labelLoad.Enabled = true;
             }
         }
 
         private void SaveChanges()
         {
-             plugin.WriteBooks(Books.BooksToList(books));        
+             _plugin.WriteBooks(Books.BooksToList(_books));        
         }
 
         private void CreateBook()
@@ -157,23 +157,23 @@ namespace Library
             DialogResult result = editForm.ShowDialog();
             if (result == DialogResult.OK)
             {
-                books.BooksList.Add(book);
+                _books.BooksList.Add(book);
                 AddBookToListView(book, listView);
-                UpdateInformation(books.BooksList[books.BooksList.Count - 1]);
+                UpdateInformation(_books.BooksList[_books.BooksList.Count - 1]);
                 _checkChanges = true;
             }
         }
 
         private void EditBook()
         {
-            FormEditBook editForm = new FormEditBook(books.BooksList[listView.SelectedIndices[0]]);
+            FormEditBook editForm = new FormEditBook(_books.BooksList[listView.SelectedIndices[0]]);
             editForm.OnError += new EventHandler<EventArgsString>(catchError);
             DialogResult result = editForm.ShowDialog();
             if (result == DialogResult.OK)
             {
-                ListViewItem _listViewItem = new ListViewItem(books.BooksList[listView.SelectedIndices[0]].Author, books.BooksList[listView.SelectedIndices[0]].Title);
+                ListViewItem _listViewItem = new ListViewItem(_books.BooksList[listView.SelectedIndices[0]].Author, _books.BooksList[listView.SelectedIndices[0]].Title);
                 listView.Items[listView.SelectedIndices[0]].Text = _listViewItem.ToString();
-                UpdateInformation(books.BooksList[listView.SelectedIndices[0]]);
+                UpdateInformation(_books.BooksList[listView.SelectedIndices[0]]);
                 _checkChanges = true;
             }
         }
@@ -183,7 +183,7 @@ namespace Library
             DialogResult result = MessageBox.Show("Вы действительно хотите удалить книгу?", "Удалить", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                books.BooksList.Remove(books.BooksList[listView.SelectedIndices[0]]);
+                _books.BooksList.Remove(_books.BooksList[listView.SelectedIndices[0]]);
                 listView.SelectedItems[0].Remove();
                 ClearInformation();
                 btnEdit.Enabled = false;
@@ -197,9 +197,9 @@ namespace Library
             listView.Clear();
             ClearInformation();
             _checkChanges = false;
-            books.BooksList.Clear();
-            books = LoadFromFile();
-            foreach (Book book in books.BooksList)
+            _books.BooksList.Clear();
+            _books = LoadFromFile();
+            foreach (Book book in _books.BooksList)
             {
                 AddBookToListView(book, listView);
             }
@@ -213,7 +213,7 @@ namespace Library
 
         private Books LoadFromFile()
         {
-            return books.ListToBooks(plugin.ReadBooks()); 
+            return _books.ListToBooks(_plugin.ReadBooks()); 
         }
 
         private void ClearInformation()
