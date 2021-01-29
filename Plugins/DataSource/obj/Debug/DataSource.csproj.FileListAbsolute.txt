@@ -52,3 +52,10 @@ D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.csproj.
 D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.csproj.CopyComplete
 D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.dll
 D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.pdb
+D:\Eksiton Test\Project\Repository\Library-App\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Repository\Library-App\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Repository\Library-App\Plugins\DataSource\obj\Debug\DataSource.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\Repository\Library-App\Plugins\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Repository\Library-App\Plugins\DataSource\obj\Debug\DataSource.csproj.CopyComplete
+D:\Eksiton Test\Project\Repository\Library-App\Plugins\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\Repository\Library-App\Plugins\DataSource\obj\Debug\DataSource.pdb

@@ -16,3 +16,9 @@ D:\Eksiton Test\Project\Library8\LibraryCore\obj\Debug\LibraryCore.csprojAssembl
 D:\Eksiton Test\Project\Library8\LibraryCore\obj\Debug\LibraryCore.csproj.CoreCompileInputs.cache
 D:\Eksiton Test\Project\Library8\LibraryCore\obj\Debug\LibraryCore.dll
 D:\Eksiton Test\Project\Library8\LibraryCore\obj\Debug\LibraryCore.pdb
+D:\Eksiton Test\Project\Repository\Library-App\OBJ\LibraryCore.dll
+D:\Eksiton Test\Project\Repository\Library-App\OBJ\LibraryCore.pdb
+D:\Eksiton Test\Project\Repository\Library-App\LibraryCore\obj\Debug\LibraryCore.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\Repository\Library-App\LibraryCore\obj\Debug\LibraryCore.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Repository\Library-App\LibraryCore\obj\Debug\LibraryCore.dll
+D:\Eksiton Test\Project\Repository\Library-App\LibraryCore\obj\Debug\LibraryCore.pdb
