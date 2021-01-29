@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<Books xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <BooksList>
+    <Book>
+      <Author>Булгаков М.А.</Author>
+      <Title>Мастер и Маргарита</Title>
+      <ISDN>978-0-7334-2609-4</ISDN>
+      <Price>358</Price>
+    </Book>
+    <Book>
+      <Author>Пушкин А.С.</Author>
+      <Title>Евгений Онегин</Title>
+      <ISDN>978-3-16-1484100</ISDN>
+      <Price>543</Price>
+    </Book>
+    <Book>
+      <Author>Достоевский Ф.М.</Author>
+      <Title>Преступление и наказание</Title>
+      <ISDN>9-782123-456803</ISDN>
+      <Price>375</Price>
+    </Book>
+    <Book>
+      <Author>Толстой Л.Н.</Author>
+      <Title>Война и мир</Title>
+      <ISDN>9-785906-873675</ISDN>
+      <Price>537</Price>
+    </Book>
+    <Book>
+      <Author>Антуан де Сент-Экзюпери</Author>
+      <Title>Маленький принц</Title>
+      <ISDN>1-55615-678-2</ISDN>
+      <Price>337</Price>
+    </Book>
+    <Book>
+      <Author>Лермонтов М.Ю.</Author>
+      <Title>Герой нашего времени</Title>
+      <ISDN>978-5-93673-265-2</ISDN>
+      <Price>688</Price>
+    </Book>
+    <Book>
+      <Author>Петров Е., Ильф И.</Author>
+      <Title>Двенадцать стульев</Title>
+      <ISDN>388053101-3</ISDN>
+      <Price>638</Price>
+    </Book>
+    <Book>
+      <Author>Оруэлл Дж.</Author>
+      <Title>1984</Title>
+      <ISDN>9-780123-456786</ISDN>
+      <Price>653</Price>
+    </Book>
+    <Book>
+      <Author>Маркес Г.Г.</Author>
+      <Title>Сто лет одиночества</Title>
+      <ISDN>9-786017-046019</ISDN>
+      <Price>324</Price>
+    </Book>
+    <Book>
+      <Author>Толстой Л.Н.</Author>
+      <Title>Анна Каренина</Title>
+      <ISDN>388053101-3</ISDN>
+      <Price>337</Price>
+    </Book>
+    <Book>
+      <Author>Достоевский Ф.М.</Author>
+      <Title>Идиот</Title>
+      <ISDN>978-5-7330-05-12-6</ISDN>
+      <Price>377</Price>
+    </Book>
+    <Book>
+      <Author>Тургенев И.С.</Author>
+      <Title>Отцы и дети</Title>
+      <ISDN>5-903116-21-3</ISDN>
+      <Price>778</Price>
+    </Book>
+    <Book>
+      <Author>Толкин Дж.Р.Р.</Author>
+      <Title>Властелин колец</Title>
+      <ISDN>978-1-929774-38-8</ISDN>
+      <Price>3211</Price>
+    </Book>
+    <Book>
+      <Author>Пастернак Б.</Author>
+      <Title>Доктор Живаго</Title>
+      <ISDN>9-781782-808084</ISDN>
+      <Price>677</Price>
+    </Book>
+    <Book>
+      <Author>Булгаков М.А.</Author>
+      <Title>Собачье сердце</Title>
+      <ISDN>9-789662-046625</ISDN>
+      <Price>134</Price>
+    </Book>
+    <Book>
+      <Author>Кэролл Л.</Author>
+      <Title>Алиса в Стране чудес</Title>
+      <ISDN>388053101-4</ISDN>
+      <Price>444</Price>
+    </Book>
+    <Book>
+      <Author>Дойл А.К.</Author>
+      <Title>Шерлок Холмс</Title>
+      <ISDN>9-783161-484100</ISDN>
+      <Price>543</Price>
+    </Book>
+    <Book>
+      <Author>Достоевский Ф.М.</Author>
+      <Title>Братья Карамазовы</Title>
+      <ISDN>9-788654-8992-8</ISDN>
+      <Price>557</Price>
+    </Book>
+  </BooksList>
+</Books>

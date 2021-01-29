@@ -1,0 +1,54 @@
+D:\Eksiton Test\Project\с подсказками\Library4\DataSource\bin\Debug\DataSource.dll
+D:\Eksiton Test\Project\с подсказками\Library4\DataSource\bin\Debug\DataSource.pdb
+D:\Eksiton Test\Project\с подсказками\Library4\DataSource\obj\Debug\DataSource.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\с подсказками\Library4\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\с подсказками\Library4\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\с подсказками\Library4\DataSource\obj\Debug\DataSource.pdb
+D:\Eksiton Test\Project\Library5\DataSource.dll
+D:\Eksiton Test\Project\Library5\DataSource.pdb
+D:\Eksiton Test\Project\Library5.1\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Library5.1\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Library5.1\DataSource\obj\Debug\DataSource.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\Library5.1\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Library5.1\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\Library5.1\DataSource\obj\Debug\DataSource.pdb
+D:\Eksiton Test\Project\Library5.2\Library5.1\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Library5.2\Library5.1\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Library5.2\Library5.1\DataSource\obj\Debug\DataSource.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\Library5.2\Library5.1\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Library5.2\Library5.1\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\Library5.2\Library5.1\DataSource\obj\Debug\DataSource.pdb
+D:\Eksiton Test\Project\Library5.3\Library5.1\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Library5.3\Library5.1\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Library5.3\Library5.1\DataSource\obj\Debug\DataSource.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\Library5.3\Library5.1\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Library5.3\Library5.1\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\Library5.3\Library5.1\DataSource\obj\Debug\DataSource.pdb
+D:\Eksiton Test\Project\Library5\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Library5\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Library5\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Library5\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\Library5\DataSource\obj\Debug\DataSource.pdb
+D:\Eksiton Test\Project\Library6\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Library6\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Library6\DataSource\obj\Debug\DataSource.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\Library6\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Library6\DataSource\obj\Debug\DataSource.csproj.CopyComplete
+D:\Eksiton Test\Project\Library6\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\Library6\DataSource\obj\Debug\DataSource.pdb
+D:\Eksiton Test\Project\Library7\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Library7\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Library7\DataSource\obj\Debug\DataSource.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\Library7\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Library7\DataSource\obj\Debug\DataSource.csproj.CopyComplete
+D:\Eksiton Test\Project\Library7\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\Library7\DataSource\obj\Debug\DataSource.pdb
+D:\Eksiton Test\Project\Library8\Plugins\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Library8\Plugins\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Library8\OBJ\DataSource.dll
+D:\Eksiton Test\Project\Library8\OBJ\DataSource.pdb
+D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.csprojAssemblyReference.cache
+D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.csproj.CoreCompileInputs.cache
+D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.csproj.CopyComplete
+D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.dll
+D:\Eksiton Test\Project\Library8\Plugins\DataSource\obj\Debug\DataSource.pdb
