@@ -24,6 +24,7 @@ namespace Library
         /// </summary>
         public IDataSource Plugin { get; set;}
         LoaderPlugins _loaderPlugins;
+        EventHandler<EventArgsString> _onError;
         /// <summary>
         /// Инизиализирует компоненты формы <c>FormLoadPlugin</c> и отображает список  плагинов.
         /// </summary>
@@ -36,7 +37,7 @@ namespace Library
             _loaderPlugins.OnError += new EventHandler<EventArgsString>(catchError);
             radioListBoxPlugins.DataSource = _loaderPlugins.GetInstances<IDataSource>();
             radioListBoxPlugins.DisplayMember = "NamePlugin";
-            SetSelectedItem();
+            SetSelectedPlugin();
             if (radioListBoxPlugins.Items.Count == 0)
             {
                 btnLoad.Enabled = false;
@@ -70,10 +71,17 @@ namespace Library
 
         private void WriteToConfig()
         {
-            System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["pluginSelected"].Value = Plugin.NamePlugin;
-            config.Save();
-            ConfigurationManager.RefreshSection("appSettings");
+            try
+            {
+                System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.Settings["pluginSelected"].Value = Plugin.NamePlugin;
+                config.Save();
+                ConfigurationManager.RefreshSection("appSettings");
+            }
+            catch (Exception ex)
+            {
+                _onError?.Invoke(this, new EventArgsString("Невозможно сохранить информацию о плагине в конфигурационный файл - прерывание по исключению:" + "\n" + ex.Message));
+            }
         }
             
         private void UpdateInformation()
@@ -102,26 +110,36 @@ namespace Library
             return false;
         }
 
-        private void SetSelectedItem()
+        private void SetSelectedPlugin()
         {
             if (Plugin != null)
             {
-                for (int i = 0; i < radioListBoxPlugins.Items.Count; i++)
-                {
-                    if (((IDataSource)radioListBoxPlugins.Items[i]).NamePlugin == ConfigurationManager.AppSettings["pluginSelected"])
-                    {
-                        radioListBoxPlugins.SetSelected(i, true);
-                        radioListBoxPlugins.SelectedItem = radioListBoxPlugins.Items[i];
-                        UpdateInformation();
-                        break;
-                    }
-                }
+                SetRadioButtonCheck();
+            }
+            else if(ConfigurationManager.AppSettings["pluginSelected"] != " ")
+            {
+                SetRadioButtonCheck();
+                LoadSelectedPlugin();
             }
             else
             {
                 ClearInformation();
                 btnLoad.Enabled = false;
                 radioListBoxPlugins.SetSelected(0, false);
+            }
+        }
+
+        private void SetRadioButtonCheck()
+        {
+            for (int i = 0; i < radioListBoxPlugins.Items.Count; i++)
+            {
+                if (((IDataSource)radioListBoxPlugins.Items[i]).NamePlugin == ConfigurationManager.AppSettings["pluginSelected"])
+                {
+                    radioListBoxPlugins.SetSelected(i, true);
+                    radioListBoxPlugins.SelectedItem = radioListBoxPlugins.Items[i];
+                    UpdateInformation();
+                    break;
+                }
             }
         }
 
@@ -139,6 +157,14 @@ namespace Library
         {
             MessageBox.Show(e.Message);
         }
+        /// <summary>
+        /// Событие - ошибка с передачей строки.
+        /// </summary>
+        public event EventHandler<EventArgsString> OnError
+        {
+            add { _onError += value; }
+            remove { _onError -= value; }
+        }
+    }
+}   
 
-    }   
-}
