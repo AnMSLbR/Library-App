@@ -33,6 +33,7 @@ namespace Library
         {
             InitializeComponent();
             ClearInformation();
+            LoadPluginSavedInConfig();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -135,10 +136,11 @@ namespace Library
         private void OpenFormLoadPlugin()
         {
             FormLoadPlugin loadPlugin = new FormLoadPlugin(_plugin);
+            loadPlugin.OnError += new EventHandler<EventArgsString>(catchError);
             DialogResult result = loadPlugin.ShowDialog();
-            if (result == DialogResult.OK)
+            _plugin = loadPlugin.Plugin;
+            if (_plugin != null)
             {
-                _plugin = loadPlugin.Plugin;
                 labelLoad.Enabled = true;
             }
         }
@@ -189,6 +191,17 @@ namespace Library
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
                 _checkChanges = true;
+            }
+        }
+
+        private void LoadPluginSavedInConfig()
+        {
+            if (ConfigurationManager.AppSettings["pluginSelected"] != " ")
+            {
+                FormLoadPlugin loadPlugin = new FormLoadPlugin(_plugin);
+                loadPlugin.OnError += new EventHandler<EventArgsString>(catchError);
+                _plugin = loadPlugin.Plugin;
+                labelLoad.Enabled = true;          
             }
         }
         
