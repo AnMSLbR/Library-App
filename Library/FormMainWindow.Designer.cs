@@ -40,8 +40,6 @@
             this.ucLibrary1.Name = "ucLibrary1";
             this.ucLibrary1.Size = new System.Drawing.Size(800, 600);
             this.ucLibrary1.TabIndex = 0;
-            this.ucLibrary1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ucLibrary1_MouseDown);
-            this.ucLibrary1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ucLibrary1_MouseMove);
             // 
             // MainWindow
             // 
