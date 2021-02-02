@@ -248,9 +248,9 @@
             this.labelLoad.ForeColor = System.Drawing.Color.Gainsboro;
             this.labelLoad.Location = new System.Drawing.Point(12, 498);
             this.labelLoad.Name = "labelLoad";
-            this.labelLoad.Size = new System.Drawing.Size(69, 18);
+            this.labelLoad.Size = new System.Drawing.Size(67, 18);
             this.labelLoad.TabIndex = 8;
-            this.labelLoad.Text = "Загрузить";
+            this.labelLoad.Text = "Обновить";
             this.labelLoad.Click += new System.EventHandler(this.labelLoad_Click);
             this.labelLoad.MouseEnter += new System.EventHandler(this.labelLoad_MouseEnter);
             this.labelLoad.MouseLeave += new System.EventHandler(this.labelLoad_MouseLeave);

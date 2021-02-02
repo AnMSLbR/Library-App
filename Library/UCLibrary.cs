@@ -23,7 +23,6 @@ namespace Library
     {
         Books _books = new Books();
         bool _checkChanges = false;
-        string _loadedPluginName;
         IDataSource _plugin;
         
         /// <summary>
@@ -59,7 +58,6 @@ namespace Library
         private void labelLoad_Click(object sender, EventArgs e)
         {
             UpdateListView();
-            _loadedPluginName = _plugin.NamePlugin;
         }
 
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
@@ -110,7 +108,7 @@ namespace Library
 
         private void Exit()
         {
-            if (_checkChanges == true || (_loadedPluginName != ConfigurationManager.AppSettings["pluginSelected"] && _loadedPluginName != null))
+            if (_checkChanges == true)
             {               
                 DialogResult result = MessageBox.Show("Сохранить изменения?", "Сохранить", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
@@ -142,6 +140,8 @@ namespace Library
             if (_plugin != null)
             {
                 labelLoad.Enabled = true;
+                LoadFromFile();
+                UpdateListView();
             }
         }
 
@@ -201,7 +201,10 @@ namespace Library
                 FormLoadPlugin loadPlugin = new FormLoadPlugin(_plugin);
                 loadPlugin.OnError += new EventHandler<EventArgsString>(catchError);
                 _plugin = loadPlugin.Plugin;
-                labelLoad.Enabled = true;          
+                labelLoad.Enabled = true;
+                LoadFromFile();
+                UpdateListView();
+
             }
         }
         
