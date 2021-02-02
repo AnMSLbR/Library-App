@@ -1,2 +1,0 @@
-D:\Eksiton Test\Project\Library8\Plugins\OBJ\DataSourceExcel.dll
-D:\Eksiton Test\Project\Library8\Plugins\OBJ\DataSourceExcel.pdb
