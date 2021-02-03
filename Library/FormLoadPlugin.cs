@@ -19,10 +19,21 @@ namespace Library
     /// </summary>
     public partial class FormLoadPlugin : Form
     {
+        private IDataSource _plugin;
         /// <summary>
         /// Загружаемый плагин
         /// </summary>
-        public IDataSource Plugin { get; set;}
+        public IDataSource Plugin
+        {
+            get
+            {
+                return _plugin;
+            }
+            private set
+            {
+                _plugin = value;
+            }
+        }
         LoaderPlugins _loaderPlugins;
         EventHandler<EventArgsString> _onError;
         /// <summary>
@@ -31,7 +42,7 @@ namespace Library
         /// <param name="plgn">Объект типа <c>IDataSource</c>.</param>
         public FormLoadPlugin(IDataSource plgn)
         {
-            this.Plugin = plgn;
+            _plugin = plgn;
             InitializeComponent();
             _loaderPlugins = new LoaderPlugins();
             _loaderPlugins.OnError += new EventHandler<EventArgsString>(catchError);
@@ -62,8 +73,8 @@ namespace Library
 
         private void LoadSelectedPlugin()
         {
-            Plugin = _loaderPlugins.LoadPlugin(((IDataSource)radioListBoxPlugins.SelectedItem).NamePlugin,  (IDataSource)radioListBoxPlugins.SelectedItem);
-            Plugin.OnError += new EventHandler<EventArgsString>(catchError);
+            _plugin = _loaderPlugins.LoadPlugin(((IDataSource)radioListBoxPlugins.SelectedItem).NamePlugin,  (IDataSource)radioListBoxPlugins.SelectedItem);
+            _plugin.OnError += new EventHandler<EventArgsString>(catchError);
             WriteToConfig();
             DialogResult = DialogResult.OK;
             this.Close();
@@ -74,7 +85,7 @@ namespace Library
             try
             {
                 System.Configuration.Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                config.AppSettings.Settings["pluginSelected"].Value = Plugin.NamePlugin;
+                config.AppSettings.Settings["pluginSelected"].Value = _plugin.NamePlugin;
                 config.Save();
                 ConfigurationManager.RefreshSection("appSettings");
             }
@@ -99,7 +110,7 @@ namespace Library
 
         private bool CheckLoadedPlugins()
         {
-            if (Plugin != null)
+            if (_plugin != null)
             {
                 if (((IDataSource)radioListBoxPlugins.SelectedItem).NamePlugin == ConfigurationManager.AppSettings["pluginSelected"])
                     return true;           
@@ -109,7 +120,7 @@ namespace Library
 
         private void SetSelectedPlugin()
         {
-            if (Plugin != null)
+            if (_plugin != null)
             {
                 SetRadioButtonCheck();
             }
