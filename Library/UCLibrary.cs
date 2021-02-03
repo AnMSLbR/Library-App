@@ -121,12 +121,23 @@ namespace Library
             FormLoadPlugin loadPlugin = new FormLoadPlugin(_plugin);
             loadPlugin.OnError += new EventHandler<EventArgsString>(catchError);
             DialogResult result = loadPlugin.ShowDialog();
+            if (result == DialogResult.OK && _checkChanges == true)
+            {
+                InvokeSaveRequest();
+            }
             _plugin = loadPlugin.Plugin;
             if (_plugin != null)
             {
                 LoadFromFile();
                 UpdateListView();
             }
+        }
+
+        private void InvokeSaveRequest()
+        {
+            DialogResult result = MessageBox.Show("Сохранить изменения?", "Сохранить", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+                SaveChanges();
         }
 
         private void SaveChanges()
