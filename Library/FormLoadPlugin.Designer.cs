@@ -75,7 +75,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.Gainsboro;
             this.groupBox1.Location = new System.Drawing.Point(225, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 193);
+            this.groupBox1.Size = new System.Drawing.Size(200, 203);
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Описание";
@@ -84,17 +84,19 @@
             // 
             this.labelDescription.Location = new System.Drawing.Point(7, 26);
             this.labelDescription.Name = "labelDescription";
-            this.labelDescription.Size = new System.Drawing.Size(187, 71);
+            this.labelDescription.Size = new System.Drawing.Size(187, 134);
             this.labelDescription.TabIndex = 0;
             // 
             // radioListBoxPlugins
             // 
-            this.radioListBoxPlugins.BackColor = System.Drawing.SystemColors.Window;
+            this.radioListBoxPlugins.BackColor = System.Drawing.SystemColors.ControlLight;
             this.radioListBoxPlugins.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.radioListBoxPlugins.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.radioListBoxPlugins.FormattingEnabled = true;
+            this.radioListBoxPlugins.ItemHeight = 19;
             this.radioListBoxPlugins.Location = new System.Drawing.Point(9, 12);
             this.radioListBoxPlugins.Name = "radioListBoxPlugins";
-            this.radioListBoxPlugins.Size = new System.Drawing.Size(200, 186);
+            this.radioListBoxPlugins.Size = new System.Drawing.Size(200, 194);
             this.radioListBoxPlugins.TabIndex = 18;
             this.radioListBoxPlugins.SelectedIndexChanged += new System.EventHandler(this.radioListBoxPlugins_SelectedIndexChanged);
             // 
