@@ -55,11 +55,6 @@ namespace Library
             DeleteBook();
         }
 
-        private void labelLoad_Click(object sender, EventArgs e)
-        {
-            UpdateListView();
-        }
-
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView.SelectedItems.Count == 1)
@@ -84,16 +79,6 @@ namespace Library
         {
             AboutBox aboutBox = new AboutBox();
             aboutBox.ShowDialog();
-        }
-
-        private void labelLoad_MouseEnter(object sender, EventArgs e)
-        {
-            labelLoad.ForeColor = Color.DimGray;
-        }
-
-        private void labelLoad_MouseLeave(object sender, EventArgs e)
-        {
-            labelLoad.ForeColor = Color.Gainsboro;
         }
         
         private void helpToolStripMenuItem_MouseEnter(object sender, EventArgs e)
@@ -139,7 +124,6 @@ namespace Library
             _plugin = loadPlugin.Plugin;
             if (_plugin != null)
             {
-                labelLoad.Enabled = true;
                 LoadFromFile();
                 UpdateListView();
             }
@@ -201,7 +185,6 @@ namespace Library
                 FormLoadPlugin loadPlugin = new FormLoadPlugin(_plugin);
                 loadPlugin.OnError += new EventHandler<EventArgsString>(catchError);
                 _plugin = loadPlugin.Plugin;
-                labelLoad.Enabled = true;
                 LoadFromFile();
                 UpdateListView();
 

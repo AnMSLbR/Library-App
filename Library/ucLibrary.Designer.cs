@@ -42,7 +42,6 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
-            this.labelLoad = new System.Windows.Forms.Label();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadPluginToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +62,7 @@
             this.listView.Location = new System.Drawing.Point(15, 29);
             this.listView.MultiSelect = false;
             this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(370, 466);
+            this.listView.Size = new System.Drawing.Size(370, 488);
             this.listView.TabIndex = 0;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.List;
@@ -239,22 +238,6 @@
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // labelLoad
-            // 
-            this.labelLoad.AutoSize = true;
-            this.labelLoad.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.labelLoad.Enabled = false;
-            this.labelLoad.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelLoad.ForeColor = System.Drawing.Color.Gainsboro;
-            this.labelLoad.Location = new System.Drawing.Point(12, 498);
-            this.labelLoad.Name = "labelLoad";
-            this.labelLoad.Size = new System.Drawing.Size(67, 18);
-            this.labelLoad.TabIndex = 8;
-            this.labelLoad.Text = "Обновить";
-            this.labelLoad.Click += new System.EventHandler(this.labelLoad_Click);
-            this.labelLoad.MouseEnter += new System.EventHandler(this.labelLoad_MouseEnter);
-            this.labelLoad.MouseLeave += new System.EventHandler(this.labelLoad_MouseLeave);
-            // 
             // menuStrip
             // 
             this.menuStrip.AutoSize = false;
@@ -315,7 +298,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.Controls.Add(this.labelLoad);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnEdit);
@@ -330,7 +312,6 @@
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -350,7 +331,6 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnExit;
-        private System.Windows.Forms.Label labelLoad;
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
