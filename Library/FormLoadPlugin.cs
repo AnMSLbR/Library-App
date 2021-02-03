@@ -92,11 +92,8 @@ namespace Library
                 labelDescription.Text = ((IDataSource)radioListBoxPlugins.Items[radioListBoxPlugins.SelectedIndex]).DescriptionPlugin;
                 if (CheckLoadedPlugins())
                 {
-                    labelStatus.Text = "(Загружен)";
                     btnLoad.Enabled = false;
                 }
-                else
-                    labelStatus.Text = "(Не загружен)";
             }
         }
 
@@ -146,7 +143,6 @@ namespace Library
         private void ClearInformation()
         {
             labelDescription.Text = string.Empty;
-            labelStatus.Text = string.Empty;
         }
         /// <summary>
         /// Выводит на экран сообщение с информацией об исключении.

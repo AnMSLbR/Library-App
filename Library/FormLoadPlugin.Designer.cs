@@ -31,7 +31,6 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.labelStatus = new System.Windows.Forms.Label();
             this.labelDescription = new System.Windows.Forms.Label();
             this.radioListBoxPlugins = new System.Windows.Forms.RadioListBox();
             this.groupBox1.SuspendLayout();
@@ -71,7 +70,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.labelStatus);
             this.groupBox1.Controls.Add(this.labelDescription);
             this.groupBox1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.groupBox1.ForeColor = System.Drawing.Color.Gainsboro;
@@ -81,14 +79,6 @@
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Описание";
-            // 
-            // labelStatus
-            // 
-            this.labelStatus.AutoSize = true;
-            this.labelStatus.Location = new System.Drawing.Point(6, 97);
-            this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(0, 18);
-            this.labelStatus.TabIndex = 1;
             // 
             // labelDescription
             // 
@@ -123,7 +113,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Загрузить плагин";
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -133,7 +122,6 @@
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label labelDescription;
-        private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.RadioListBox radioListBoxPlugins;
     }
 }
