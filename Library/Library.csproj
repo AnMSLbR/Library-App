@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DataSource, Version=1.1.1.2, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DataSource, Version=1.1.1.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OBJ\DataSource.dll</HintPath>
     </Reference>
@@ -61,11 +61,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Plugins\DataSourceExcel\EPPlus\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="LibraryCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="LibraryCommon, Version=1.1.1.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OBJ\LibraryCommon.dll</HintPath>
     </Reference>
-    <Reference Include="LibraryCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="LibraryCore, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\OBJ\LibraryCore.dll</HintPath>
     </Reference>
