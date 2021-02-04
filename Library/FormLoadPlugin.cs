@@ -133,7 +133,7 @@ namespace Library
             {
                 ClearInformation();
                 btnLoad.Enabled = false;
-                radioListBoxPlugins.SetSelected(0, false);
+                radioListBoxPlugins.ClearSelected();
             }
         }
 
