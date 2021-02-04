@@ -35,7 +35,7 @@ namespace DataSourceXML
             try
             {
                 XmlSerializer xml = new XmlSerializer(typeof(List<List<string>>));
-                using (FileStream fs = new FileStream(@"DataBases\Books.xml", FileMode.Truncate))
+                using (FileStream fs = new FileStream(@"..\DataBases\Books.xml", FileMode.Truncate))
                 {
                     xml.Serialize(fs, listOfBooks);
                 }
@@ -56,7 +56,7 @@ namespace DataSourceXML
             try
             {
                 XmlSerializer xml = new XmlSerializer(typeof(List<List<string>>));
-                using (FileStream fs = new FileStream(@"DataBases\Books.xml", FileMode.OpenOrCreate))
+                using (FileStream fs = new FileStream(@"..\DataBases\Books.xml", FileMode.OpenOrCreate))
                 {
                     return (List <List<string>>)xml.Deserialize(fs);
                 }
