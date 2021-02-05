@@ -33,7 +33,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\OBJ\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,7 +55,7 @@
   <ItemGroup>
     <Reference Include="DataSource, Version=1.1.1.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OBJ\DataSource.dll</HintPath>
+      <HintPath>bin\Debug\DataSource.dll</HintPath>
     </Reference>
     <Reference Include="EPPlus, Version=0.0.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -63,11 +63,11 @@
     </Reference>
     <Reference Include="LibraryCommon, Version=1.1.1.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OBJ\LibraryCommon.dll</HintPath>
+      <HintPath>bin\Debug\LibraryCommon.dll</HintPath>
     </Reference>
     <Reference Include="LibraryCore, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\OBJ\LibraryCore.dll</HintPath>
+      <HintPath>bin\Debug\LibraryCore.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
