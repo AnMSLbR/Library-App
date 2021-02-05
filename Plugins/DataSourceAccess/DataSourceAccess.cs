@@ -18,7 +18,7 @@ namespace DataSourceAccess
     {
         EventHandler<EventArgsString> _onError;
         
-        private string _connectString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=..\DataBases\Books.mdb;";
+        private string _connectString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=..\..\..\DataBases\Books.mdb;";
         /// <summary>
         /// Содержит название плагина.
         /// </summary>
