@@ -51,7 +51,7 @@ namespace DataSourceExcel
                         worksheet.Cells[i, 4].Value = Convert.ToDecimal(list[3]);
                         i++;
                     }
-                    excelPackage.SaveAs(new FileInfo(@"..\DataBases\Books.xlsx"));
+                    excelPackage.SaveAs(new FileInfo(@"..\..\..\DataBases\Books.xlsx"));
                 }
                 catch (Exception ex)
                 {
@@ -70,7 +70,7 @@ namespace DataSourceExcel
             List<List<string>> listOfBooks = new List<List<string>>();
             try
             {
-                FileInfo file = new FileInfo(@"..\DataBases\Books.xlsx");
+                FileInfo file = new FileInfo(@"..\..\..\DataBases\Books.xlsx");
                 using (ExcelPackage excelPackage = new ExcelPackage(file))
                 {
                     ExcelWorksheet worksheet = excelPackage.Workbook.Worksheets.First();
