@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\OBJ\</OutputPath>
+    <OutputPath>..\..\Library\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -32,11 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="LibraryCommon">
-      <HintPath>..\..\OBJ\LibraryCommon.dll</HintPath>
+    <Reference Include="LibraryCommon, Version=1.1.1.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\bin\Debug\LibraryCommon.dll</HintPath>
     </Reference>
-    <Reference Include="LibraryCore">
-      <HintPath>..\..\OBJ\LibraryCore.dll</HintPath>
+    <Reference Include="LibraryCore, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\bin\Debug\LibraryCore.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
