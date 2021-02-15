@@ -10,7 +10,7 @@ using System.IO;
 using LibraryCommon;
 using LibraryCore;
 
-namespace DataSourceXML
+namespace PluginDataSourceXML
 {
     /// <summary>
     /// Содержит методы для записи и чтения из XML файла.

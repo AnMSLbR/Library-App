@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using LibraryCommon;
 using LibraryCore;
 
-namespace DataSourceAccess
+namespace PluginDataSourceAccess
 {
     /// <summary>
     /// Содержит методы для чтения и записи из базы данных MS Access.
