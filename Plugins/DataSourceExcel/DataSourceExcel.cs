@@ -10,7 +10,7 @@ using LibraryCore;
 using OfficeOpenXml;
 
 
-namespace DataSourceExcel
+namespace PluginDataSourceExcel
 {
     /// <summary>
     /// Содержит методы для записи и чтения данных из MS Excel.
