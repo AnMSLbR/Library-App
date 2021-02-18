@@ -17,7 +17,7 @@ namespace PluginDataSourceAccess
     public class DataSourceAccess : IDataSource
     {
         EventHandler<EventArgsString> _onError;
-        
+        IDataBase _db = new DataBase();
         private string _connectString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=..\..\..\DataBases\Books.mdb;";
         /// <summary>
         /// Содержит название плагина.
@@ -27,6 +27,12 @@ namespace PluginDataSourceAccess
         /// Содержит описание плагина.
         /// </summary>
         public string DescriptionPlugin { get { return "Плагин для записи и чтения из MS Access"; } }
+
+        public DataSourceAccess() { }
+        public DataSourceAccess(IDataBase db)
+        {
+            this._db = db;
+        }
         /// <summary>
         /// Запись в базу данных MS Access.
         /// </summary>
@@ -34,25 +40,21 @@ namespace PluginDataSourceAccess
         public void WriteBooks(List<List<string>> listOfBooks)
         {
             ClearData();
-            using (OleDbConnection dbConnection = new OleDbConnection(_connectString))
+            _db.OpenConnection(_connectString);
+            try
             {
-                try
+                int i = 1;
+                foreach (List<string> Book in listOfBooks)
                 {
-                    dbConnection.Open();
-                    int i = 1;
-                    foreach (List<string> Book in listOfBooks)
-                    {
-                        string insertQuery = $"INSERT INTO Books (Id, Author, Title, ISDN, Price) VALUES ({i},'{Book[0]}','{Book[1]}','{Book[2]}',{Convert.ToDecimal(Book[3])})";
-                        OleDbCommand insertCommand = new OleDbCommand(insertQuery, dbConnection);
-                        insertCommand.ExecuteNonQuery();
-                        i++;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _onError?.Invoke(this, new EventArgsString("Невозможно сохранить книги в базе данных - прерывание по исключению:" + "\n" + ex.Message));
+                    _db.Modify($"INSERT INTO Books (Id, Author, Title, ISDN, Price) VALUES ({i},'{Book[0]}','{Book[1]}','{Book[2]}',{Convert.ToDecimal(Book[3])})");
+                    i++;
                 }
             }
+            catch (Exception ex)
+            {
+                _onError?.Invoke(this, new EventArgsString("Невозможно сохранить книги в базе данных - прерывание по исключению:" + "\n" + ex.Message));
+            }
+            _db.CloseConnection();
         }
         /// <summary>
         /// Чтение из базы данных MS Access.
@@ -63,44 +65,46 @@ namespace PluginDataSourceAccess
         public List<List<string>> ReadBooks()
         {
             List <List<string>> listOfBooks = new List<List<string>>();
-            using (OleDbConnection dbConnection = new OleDbConnection(_connectString))
+            _db.OpenConnection(_connectString);
+            try
             {
-                try
+                List<string> bookAttributes = _db.Retrieve("SELECT * FROM Books");
+                List<string> book = new List<string>();
+                int k = 0;
+                for (int i = 1; i <= bookAttributes.Count; i++)
                 {
-                    dbConnection.Open();
-                    string selectQuery = "SELECT * FROM Books";
-                    OleDbCommand selectCommand = new OleDbCommand(selectQuery, dbConnection);
-                    OleDbDataReader reader = selectCommand.ExecuteReader();
-                    while (reader.Read())
+                    if (i % 5 == 0)
+                        continue;
+                    book.Add(bookAttributes[i]);
+                    k++;
+                    if (k == 4)
                     {
-                        List<string> list = new List<string>() { reader["Author"].ToString(), reader["Title"].ToString(), reader["ISDN"].ToString(), reader["Price"].ToString() };
-                        listOfBooks.Add(list);
+                        k = 0;
+                        listOfBooks.Add(book);
+                        book = new List<string>();
                     }
                 }
-                catch (Exception ex)
-                {
-                    _onError?.Invoke(this, new EventArgsString("Невозможно загрузить книги из базы данных - прерывание по исключению:" + "\n" + ex.Message));
-                }
-                return listOfBooks;
             }
+            catch (Exception ex)
+            {
+                _onError?.Invoke(this, new EventArgsString("Невозможно загрузить книги из базы данных - прерывание по исключению:" + "\n" + ex.Message));
+            }
+            _db.CloseConnection();
+            return listOfBooks; 
         }
 
         private void ClearData()
         {
-            using (OleDbConnection dbConnection = new OleDbConnection(_connectString))
+            _db.OpenConnection(_connectString);
+            try
             {
-                try
-                {
-                    dbConnection.Open();
-                    string deleteQuery = "DELETE FROM Books";
-                    OleDbCommand deleteCommand = new OleDbCommand(deleteQuery, dbConnection);
-                    deleteCommand.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    _onError?.Invoke(this, new EventArgsString("Невозможно очистить базу данных - прерывание по исключению:" + "\n" + ex.Message));
-                }
+                _db.Modify("DELETE FROM Books");
             }
+            catch (Exception ex)
+            {
+                _onError?.Invoke(this, new EventArgsString("Невозможно очистить базу данных - прерывание по исключению:" + "\n" + ex.Message));
+            }
+            _db.CloseConnection();
         }
         /// <summary>
         /// Событие - ошибка с передачей строки.
