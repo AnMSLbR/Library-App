@@ -58,22 +58,10 @@ namespace Library.Tests
                 int i = _listOfBooks.Count - 1;
                 while (reader.Read())
                 {
-                    if (reader["Author"].ToString() != _listOfBooks[i][0])
-                        Assert.Fail($"Ошибка записи: Поле 'Автор' {0}-й книги сохранено некорректно", i + 1);
-                    else
-                        Assert.IsTrue(true);
-                    if (reader["Title"].ToString() != _listOfBooks[i][1])
-                        Assert.Fail($"Ошибка записи: Поле 'Название' {0}-й книги сохранено некорректно", i + 1);
-                    else
-                        Assert.IsTrue(true);
-                    if (reader["ISDN"].ToString() != _listOfBooks[i][2])
-                        Assert.Fail($"Ошибка записи: Поле 'ISDN' {0}-й книги сохранено некорректно", i + 1);
-                    else
-                        Assert.IsTrue(true);
-                    if (reader["Price"].ToString() != _listOfBooks[i][3])
-                        Assert.Fail($"Ошибка записи: Поле 'Цена' {0}-й книги сохранено некорректно", i + 1);
-                    else
-                        Assert.IsTrue(true);
+                    Assert.IsTrue(reader["Author"].ToString() == _listOfBooks[i][0], ($"Ошибка записи: Поле 'Автор' {i + 1}-й книги сохранено некорректно"));
+                    Assert.IsTrue(reader["Title"].ToString() == _listOfBooks[i][1], ($"Ошибка записи: Поле 'Название' {i + 1}-й книги сохранено некорректно"));
+                    Assert.IsTrue(reader["ISDN"].ToString() == _listOfBooks[i][2], ($"Ошибка записи: Поле 'ISDN' {i + 1}-й книги сохранено некорректно"));
+                    Assert.IsTrue(reader["Price"].ToString() == _listOfBooks[i][3], ($"Ошибка записи: Поле 'Цена' {i + 1}-й книги сохранено некорректно"));
                     i--;
                 }
             }
@@ -93,22 +81,10 @@ namespace Library.Tests
                 int i = _listOfBooks.Count - 1;
                 while (reader.Read())
                 {
-                    if (reader["Author"].ToString() != _listOfBooks[i][0])
-                        Assert.Fail($"Ошибка чтения: Поле 'Автор' {0}-й книги прочитано некорректно", i + 1);
-                    else
-                        Assert.IsTrue(true);
-                    if (reader["Title"].ToString() != _listOfBooks[i][1])
-                        Assert.Fail($"Ошибка чтения: Поле 'Название' {0}-й книги прочитано некорректно", i + 1);
-                    else
-                        Assert.IsTrue(true);
-                    if (reader["ISDN"].ToString() != _listOfBooks[i][2])
-                        Assert.Fail($"Ошибка чтения: Поле 'ISDN' {0}-й книги прочитано некорректно", i + 1);
-                    else
-                        Assert.IsTrue(true);
-                    if (reader["Price"].ToString() != _listOfBooks[i][3])
-                        Assert.Fail($"Ошибка чтение: Поле 'Цена' {0}-й книги прочитано некорректно", i + 1);
-                    else
-                        Assert.IsTrue(true);
+                    Assert.IsTrue(reader["Author"].ToString() == _listOfBooks[i][0], ($"Ошибка чтения: Поле 'Автор' {i +1}-й книги прочитано некорректно"));
+                    Assert.IsTrue(reader["Title"].ToString() == _listOfBooks[i][1], ($"Ошибка чтения: Поле 'Название' {i + 1}-й книги прочитано некорректно"));
+                    Assert.IsTrue(reader["ISDN"].ToString() == _listOfBooks[i][2], ($"Ошибка чтения: Поле 'ISDN' {i + 1}-й книги прочитано некорректно"));
+                    Assert.IsTrue(reader["Price"].ToString() == _listOfBooks[i][3], ($"Ошибка чтения: Поле 'Цена' {i + 1}-й книги прочитано некорректно"));
                     i--;
                 }
             }
