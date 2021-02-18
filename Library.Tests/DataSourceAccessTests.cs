@@ -19,13 +19,18 @@ namespace Library.Tests
         {
             _connectString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=..\..\..\DataBases\Books.mdb;";
             _plugin = new DataSourceAccess();
+            FillListOfBooks();
+        }
 
+        [TestCleanup]
+        public void TestCleanUp()
+        {
+            _listOfBooks.Clear();
         }
 
         [TestMethod]
-        public void CheckPluginAccess()
+        public void CheckPluginAccessComplete()
         {
-            FillListOfBooks();
             CheckResultWriteBooks();
             CheckResultReadBooks();
             DeleteRecordFromDB();
