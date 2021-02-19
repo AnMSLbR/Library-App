@@ -155,7 +155,9 @@ namespace Library.Tests
         public void CheckPluginAccessFake()
         {
             CheckResultWriteBooksFake();
+            CheckResultThrowingExceptionWriteBooksFake();
             CheckResultReadBooksFake();
+            CheckResultThrowingExceptionReadBooksFake();
         }
 
         private void CheckResultWriteBooksFake()
@@ -175,7 +177,26 @@ namespace Library.Tests
             mock.VerifyAll();
         }
 
-        private void CheckResultReadBooksFake()
+        private void CheckResultThrowingExceptionWriteBooksFake()
+        {
+            Exception ex = new Exception();
+            string message = "Невозможно сохранить книги в базе данных - прерывание по исключению:" + "\n" + $"{ex.Message}";
+            var dbMock = new Mock<IDataBase>();
+            dbMock.Setup(x => x.Modify(It.IsAny<string>())).Throws(ex);
+            var pluginMock = new Mock<DataSourceAccess>(dbMock.Object);
+            EventArgsString mess = null;
+            pluginMock.Object.OnError += delegate (object sender, EventArgsString e)
+            {
+                mess = e;
+            };
+
+            pluginMock.Object.WriteBooks(_listOfBooks);
+
+            Assert.IsNotNull(mess, "Событие не вызвано");
+            Assert.AreEqual(mess.Message, message, $"Ожидается сообщение: \"{message}\";" + "\n" + $"Вызвано сообщение: \"{mess.Message}\"");
+        }
+
+            private void CheckResultReadBooksFake()
         {
             var mock = new Mock<IDataBase>();
             mock.Setup(x => x.Retrieve("SELECT * FROM Books"))
@@ -197,7 +218,28 @@ namespace Library.Tests
             }
         }
 
-        private List<string> ReturnListOfStrings()
+        private void CheckResultThrowingExceptionReadBooksFake()
+        {
+            Exception ex = new Exception();
+            string message = "Невозможно загрузить книги из базы данных - прерывание по исключению:" + "\n" + $"{ex.Message}";
+            var dbMock = new Mock<IDataBase>();
+            dbMock.Setup(x => x.Retrieve("SELECT * FROM Books"))
+                .Throws(ex);
+
+            var pluginMock = new Mock<DataSourceAccess>(dbMock.Object);
+            EventArgsString mess = null;
+            pluginMock.Object.OnError += delegate (object sender, EventArgsString e)
+            {
+                mess = e;
+            };
+
+            pluginMock.Object.ReadBooks();
+
+            Assert.IsNotNull(mess, "Событие не вызвано");
+            Assert.AreEqual(mess.Message, message, $"Ожидается сообщение: \"{message}\";" + "\n" + $"Вызвано сообщение: \"{mess.Message}\"");
+        }
+
+            private List<string> ReturnListOfStrings()
         {
             List<string> listOfStrings = new List<string>();
             int id = 1;
