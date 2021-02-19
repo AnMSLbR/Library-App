@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PluginDataSourceAccess;
 using Moq;
+using LibraryCommon;
 
 namespace Library.Tests
 {
@@ -14,6 +15,7 @@ namespace Library.Tests
         private List<List<string>> _listOfBooks;
         private string _connectString;
         private DataSourceAccess _plugin;
+        IDataBase db = null;
 
         [TestInitialize]
         public void TestInitialize()
@@ -34,6 +36,8 @@ namespace Library.Tests
         {
             CheckResultWriteBooks();
             CheckResultReadBooks();
+            CheckResultThrowingExceptionWriteBooksComplete();
+            CheckResultThrowingExceptionReadBooksComplete();
             DeleteRecordFromDB();
         }
 
@@ -44,6 +48,18 @@ namespace Library.Tests
             List<string> book2 = new List<string>() { "Мартин Р.", "Чистый код", "7-325-4632-643", "459" };
             _listOfBooks.Add(book1);
             _listOfBooks.Add(book2);
+        }
+
+        private void FillIncorrectListOfBooks()
+        {
+            _listOfBooks.Clear();
+            _listOfBooks = new List<List<string>>();
+            List<string> book1 = new List<string>() { "Скит Дж.", "С# in Depth", "4-565-649-65", "754" };
+            List<string> book2 = new List<string>() { "Мартин Р.", "Чистая архитектура", "7-325-1342-93" };
+            List<string> book3 = new List<string>() { "Экберг Ф.", "C# Smorgasbord", "4-82-43654-573", "654", "21.04.2007" };
+            _listOfBooks.Add(book1);
+            _listOfBooks.Add(book2);
+            _listOfBooks.Add(book3);
         }
 
         private void CheckResultWriteBooks()
@@ -66,6 +82,20 @@ namespace Library.Tests
                     i--;
                 }
             }
+        }
+
+        private void CheckResultThrowingExceptionWriteBooksComplete()
+        {
+            FillIncorrectListOfBooks();
+            string message = "Невозможно сохранить книги в базе данных - прерывание по исключению:" + "\n" + "Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции." + "\r\n" + "Имя параметра: index";
+            EventArgsString mess = null;
+            _plugin.OnError += delegate (object sender, EventArgsString e)
+            {
+                mess = e;
+            };
+            _plugin.WriteBooks(_listOfBooks);
+            Assert.IsNotNull(mess, "Событие не вызвано");
+            Assert.AreEqual(message, mess.Message, $"Ожидается сообщение: \"{message}\";" + "\n" + $"Вызвано сообщение: \"{mess.Message}\"");
         }
 
         private void CheckResultReadBooks()
@@ -91,7 +121,22 @@ namespace Library.Tests
             }
         }
 
-        private void DeleteRecordFromDB()
+        private void CheckResultThrowingExceptionReadBooksComplete()
+        {
+            FillIncorrectListOfBooks();
+            _plugin = new DataSourceAccess(db);
+            string message = "Невозможно загрузить книги из базы данных - прерывание по исключению:" + "\n" + "Ссылка на объект не указывает на экземпляр объекта.";
+            EventArgsString mess = null;
+            _plugin.OnError += delegate (object sender, EventArgsString e)
+            {
+                mess = e;
+            };
+            _plugin.ReadBooks();
+            Assert.IsNotNull(mess, "Событие не вызвано");
+            Assert.AreEqual(message, mess.Message, $"Ожидается сообщение: \"{message}\";" + "\n" + $"Вызвано сообщение: \"{mess.Message}\"");
+        }
+
+            private void DeleteRecordFromDB()
         {
             using (OleDbConnection dbConnection = new OleDbConnection(_connectString))
             {
