@@ -40,9 +40,9 @@ namespace PluginDataSourceAccess
         public void WriteBooks(List<List<string>> listOfBooks)
         {
             ClearData();
-            _db.OpenConnection(_connectString);
             try
             {
+                _db.OpenConnection(_connectString);
                 int i = 1;
                 foreach (List<string> Book in listOfBooks)
                 {
@@ -54,7 +54,7 @@ namespace PluginDataSourceAccess
             {
                 _onError?.Invoke(this, new EventArgsString("Невозможно сохранить книги в базе данных - прерывание по исключению:" + "\n" + ex.Message));
             }
-            _db.CloseConnection();
+            _db?.CloseConnection();
         }
         /// <summary>
         /// Чтение из базы данных MS Access.
@@ -65,9 +65,10 @@ namespace PluginDataSourceAccess
         public List<List<string>> ReadBooks()
         {
             List <List<string>> listOfBooks = new List<List<string>>();
-            _db.OpenConnection(_connectString);
+
             try
             {
+                _db.OpenConnection(_connectString);
                 List<string> bookAttributes = _db.Retrieve("SELECT * FROM Books");
                 List<string> book = new List<string>();
                 int k = 0;
@@ -89,22 +90,23 @@ namespace PluginDataSourceAccess
             {
                 _onError?.Invoke(this, new EventArgsString("Невозможно загрузить книги из базы данных - прерывание по исключению:" + "\n" + ex.Message));
             }
-            _db.CloseConnection();
+            _db?.CloseConnection();
             return listOfBooks; 
         }
 
         private void ClearData()
         {
-            _db.OpenConnection(_connectString);
+
             try
             {
+                _db.OpenConnection(_connectString);
                 _db.Modify("DELETE FROM Books");
             }
             catch (Exception ex)
             {
                 _onError?.Invoke(this, new EventArgsString("Невозможно очистить базу данных - прерывание по исключению:" + "\n" + ex.Message));
             }
-            _db.CloseConnection();
+            _db?.CloseConnection();
         }
         /// <summary>
         /// Событие - ошибка с передачей строки.
