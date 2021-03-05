@@ -39,15 +39,44 @@ namespace PluginDataSourceAccess
         /// <param name="listOfBooks">Список книг типа <c>List<List<string>></c>.</param>
         public void WriteBooks(List<List<string>> listOfBooks)
         {
-            ClearData();
             try
             {
                 _db.OpenConnection(_connectString);
-                int i = 1;
+                string query;
+                int id = 1;
+                int recordsCount = Convert.ToInt32(_db.Retrieve("SELECT COUNT(Id) FROM Books")[0]);
+                List<string> book = new List<string>();
                 foreach (List<string> Book in listOfBooks)
                 {
-                    _db.Modify($"INSERT INTO Books (Id, Author, Title, ISDN, Price) VALUES ({i},'{Book[0]}','{Book[1]}','{Book[2]}',{Convert.ToDecimal(Book[3])})");
-                    i++;
+                    query = $"SELECT * FROM Books WHERE [Id] = {id} AND [Author] = '{Book[0]}' AND [Title] = '{Book[1]}' AND [ISDN] = '{Book[2]}' AND [Price] = {Convert.ToDecimal(Book[3])}";
+                    book = _db.Retrieve(query);
+                    if ((book.Count == 0) && (id <= recordsCount))
+                    {
+                        query = $"UPDATE Books SET [Author] = '{Book[0]}', [Title] = '{Book[1]}', [ISDN] = '{Book[2]}', [Price] = {Convert.ToDecimal(Book[3])} WHERE [Id] = {id}";
+                        book.Clear();
+                        _db.Modify(query);
+                    }
+                    else if ((book.Count == 0) && (id > recordsCount))
+                    {
+                        query = $"INSERT INTO Books (Id, Author, Title, ISDN, Price) VALUES ({id}, '{Book[0]}', '{Book[1]}', '{Book[2]}', {Convert.ToDecimal(Book[3])})";
+                        book.Clear();
+                        _db.Modify(query);
+                    }
+                    else
+                    {
+                        book.Clear();
+                        id++;
+                        continue;
+                    }
+                    id++;
+                }
+                if (listOfBooks.Count < recordsCount)
+                {
+                    for (int i = 0; i < (recordsCount - listOfBooks.Count); i++)
+                    {
+                        query = $"DELETE * FROM Books WHERE Id = (SELECT MAX(Id) FROM Books)";
+                        _db.Modify(query);
+                    }
                 }
             }
             catch (Exception ex)
@@ -94,20 +123,6 @@ namespace PluginDataSourceAccess
             return listOfBooks; 
         }
 
-        private void ClearData()
-        {
-
-            try
-            {
-                _db.OpenConnection(_connectString);
-                _db.Modify("DELETE FROM Books");
-            }
-            catch (Exception ex)
-            {
-                _onError?.Invoke(this, new EventArgsString("Невозможно очистить базу данных - прерывание по исключению:" + "\n" + ex.Message));
-            }
-            _db?.CloseConnection();
-        }
         /// <summary>
         /// Событие - ошибка с передачей строки.
         /// </summary>
