@@ -193,32 +193,78 @@ namespace Library.Tests
         [TestMethod]
         public void CheckPluginAccessFake()
         {
-            CheckResultWriteBooksFake();
+            CheckResultWriteBooksFake01();
+            CheckResultWriteBooksFake02();
             CheckResultThrowingExceptionWriteBooksFake();
             CheckResultReadBooksFake();
             CheckResultThrowingExceptionReadBooksFake();
         }
-
-        private void CheckResultWriteBooksFake()
+        // case: count of books in list (= 2) <= count of records in db (= 4)
+        private void CheckResultWriteBooksFake01()
         {
             var mock = new Mock<IDataBase>();
-            List<string> listOfInserts = new List<string>();
-            for (int i = 0; i < _listOfBooks.Count; i++)
-                listOfInserts.Add($"INSERT INTO Books (Id, Author, Title, ISDN, Price) VALUES ({i + 1},'{_listOfBooks[i][0]}','{_listOfBooks[i][1]}'," +
-                    $"'{_listOfBooks[i][2]}',{Convert.ToDecimal(_listOfBooks[i][3])})");
-            foreach (string insertQuery in listOfInserts)
-                mock.Setup(x => x.Modify(insertQuery));
+            mock.Setup(x => x.Retrieve("SELECT COUNT(Id) FROM Books"))
+                .Returns(new List<string>() { "4" });
+
+            mock.Setup(x => x.Retrieve($"SELECT * FROM Books WHERE [Id] = {1} AND [Author] = '{_listOfBooks[0][0]}' " +
+                 $"AND [Title] = '{_listOfBooks[0][1]}' AND [ISDN] = '{_listOfBooks[0][2]}' AND [Price] = {Convert.ToDecimal(_listOfBooks[0][3])}"))
+                 .Returns(_listOfBooks[0]);
+
+            mock.Setup(x => x.Retrieve($"SELECT * FROM Books WHERE [Id] = {2} AND [Author] = '{_listOfBooks[1][0]}' " +
+                 $"AND [Title] = '{_listOfBooks[1][1]}' AND [ISDN] = '{_listOfBooks[1][2]}' AND [Price] = {Convert.ToDecimal(_listOfBooks[1][3])}"))
+                 .Returns(new List<string>());
+            mock.Setup(x => x.Modify($"UPDATE Books SET [Author] = '{_listOfBooks[1][0]}', [Title] = '{_listOfBooks[1][1]}', [ISDN] = '{_listOfBooks[1][2]}'," +
+                 $" [Price] = {Convert.ToDecimal(_listOfBooks[1][3])} WHERE [Id] = {2}"));
+
+            mock.Setup(x => x.Modify($"DELETE * FROM Books WHERE Id = (SELECT MAX(Id) FROM Books)"));
 
             _plugin = new DataSourceAccess(mock.Object);
 
             _plugin.WriteBooks(_listOfBooks);
 
             mock.VerifyAll();
+            mock.Verify(x => x.Modify(It.IsAny<string>()), Times.Exactly(3));
+            mock.Verify(x => x.Retrieve(It.IsAny<string>()), Times.Exactly(3));
+        }
+
+        // case: count of books in list (= 3) > count of records in db (= 2)
+        private void CheckResultWriteBooksFake02()
+        {
+            _listOfBooks.Clear();
+            FillListOfBooks();
+            _listOfBooks.Add(new List<string>() { "Мюллер Д.П.", "C# для чайников", "4-657-4982-77", "324" });
+            var mock = new Mock<IDataBase>();
+            mock.Setup(x => x.Retrieve("SELECT COUNT(Id) FROM Books"))
+                .Returns(new List<string>() { "2" });
+
+            mock.Setup(x => x.Retrieve($"SELECT * FROM Books WHERE [Id] = {1} AND [Author] = '{_listOfBooks[0][0]}' " +
+                 $"AND [Title] = '{_listOfBooks[0][1]}' AND [ISDN] = '{_listOfBooks[0][2]}' AND [Price] = {Convert.ToDecimal(_listOfBooks[0][3])}"))
+                 .Returns(new List<string>());
+            mock.Setup(x => x.Modify($"UPDATE Books SET [Author] = '{_listOfBooks[0][0]}', [Title] = '{_listOfBooks[0][1]}'," +
+                 $" [ISDN] = '{_listOfBooks[0][2]}', [Price] = {Convert.ToDecimal(_listOfBooks[0][3])} WHERE [Id] = {1}"));
+
+            mock.Setup(x => x.Retrieve($"SELECT * FROM Books WHERE [Id] = {2} AND [Author] = '{_listOfBooks[1][0]}' " +
+                 $"AND [Title] = '{_listOfBooks[1][1]}' AND [ISDN] = '{_listOfBooks[1][2]}' AND [Price] = {Convert.ToDecimal(_listOfBooks[1][3])}"))
+                 .Returns(_listOfBooks[1]);
+
+            mock.Setup(x => x.Retrieve($"SELECT * FROM Books WHERE [Id] = {3} AND [Author] = '{_listOfBooks[2][0]}' " +
+                 $"AND [Title] = '{_listOfBooks[2][1]}' AND [ISDN] = '{_listOfBooks[2][2]}' AND [Price] = {Convert.ToDecimal(_listOfBooks[2][3])}"))
+                 .Returns(new List<string>());
+            mock.Setup(x => x.Modify($"INSERT INTO Books (Id, Author, Title, ISDN, Price)" +
+                 $" VALUES ({3}, '{_listOfBooks[2][0]}', '{_listOfBooks[2][1]}', '{_listOfBooks[2][2]}', {Convert.ToDecimal(_listOfBooks[2][3])})"));
+
+            _plugin = new DataSourceAccess(mock.Object);
+
+            _plugin.WriteBooks(_listOfBooks);
+
+            mock.VerifyAll();
+            mock.Verify(x => x.Modify(It.IsAny<string>()), Times.Exactly(2));
+            mock.Verify(x => x.Retrieve(It.IsAny<string>()), Times.Exactly(4));
         }
 
         private void CheckResultThrowingExceptionWriteBooksFake()
         {
-            Exception ex = new Exception();
+            NullReferenceException ex = new NullReferenceException();
             string message = "Невозможно сохранить книги в базе данных - прерывание по исключению:" + "\n" + $"{ex.Message}";
             var dbMock = new Mock<IDataBase>();
             dbMock.Setup(x => x.Modify(It.IsAny<string>())).Throws(ex);
@@ -235,8 +281,10 @@ namespace Library.Tests
             Assert.AreEqual(mess.Message, message, $"Ожидается сообщение: \"{message}\";" + "\n" + $"Вызвано сообщение: \"{mess.Message}\"");
         }
 
-            private void CheckResultReadBooksFake()
+        private void CheckResultReadBooksFake()
         {
+            _listOfBooks.Clear();
+            FillListOfBooks();
             var mock = new Mock<IDataBase>();
             mock.Setup(x => x.Retrieve("SELECT * FROM Books"))
                 .Returns(ReturnListOfStrings());
