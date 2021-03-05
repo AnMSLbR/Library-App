@@ -15,7 +15,8 @@ namespace Library.Tests
         private List<List<string>> _listOfBooks;
         private string _connectString;
         private DataSourceAccess _plugin;
-        IDataBase db = null;
+        IDataBase _db = null;
+        private List<List<string>> _dbData;
 
         [TestInitialize]
         public void TestInitialize()
@@ -34,8 +35,11 @@ namespace Library.Tests
         [TestMethod]
         public void CheckPluginAccessComplete()
         {
+            SaveDatabaseData();
             CheckResultWriteBooks();
             CheckResultReadBooks();
+            DeleteRecordFromDB();
+            RestoreDatabaseData();
             CheckResultThrowingExceptionWriteBooksComplete();
             CheckResultThrowingExceptionReadBooksComplete();
             DeleteRecordFromDB();
@@ -54,12 +58,10 @@ namespace Library.Tests
         {
             _listOfBooks.Clear();
             _listOfBooks = new List<List<string>>();
-            List<string> book1 = new List<string>() { "Скит Дж.", "С# in Depth", "4-565-649-65", "754" };
-            List<string> book2 = new List<string>() { "Мартин Р.", "Чистая архитектура", "7-325-1342-93" };
-            List<string> book3 = new List<string>() { "Экберг Ф.", "C# Smorgasbord", "4-82-43654-573", "654", "21.04.2007" };
+            List<string> book1 = new List<string>() { "Мартин Р.", "Чистая архитектура", "7-325-1342-93" };
+            List<string> book2 = new List<string>() { "Экберг Ф.", "C# Smorgasbord", "4-82-43654-573", "654", "21.04.2007" };
             _listOfBooks.Add(book1);
             _listOfBooks.Add(book2);
-            _listOfBooks.Add(book3);
         }
 
         private void CheckResultWriteBooks()
@@ -124,7 +126,7 @@ namespace Library.Tests
         private void CheckResultThrowingExceptionReadBooksComplete()
         {
             FillIncorrectListOfBooks();
-            _plugin = new DataSourceAccess(db);
+            _plugin = new DataSourceAccess(_db);
             string message = "Невозможно загрузить книги из базы данных - прерывание по исключению:" + "\n" + "Ссылка на объект не указывает на экземпляр объекта.";
             EventArgsString mess = null;
             _plugin.OnError += delegate (object sender, EventArgsString e)
@@ -136,18 +138,55 @@ namespace Library.Tests
             Assert.AreEqual(message, mess.Message, $"Ожидается сообщение: \"{message}\";" + "\n" + $"Вызвано сообщение: \"{mess.Message}\"");
         }
 
-            private void DeleteRecordFromDB()
+        private void SaveDatabaseData()
+        {
+            using (OleDbConnection dbConnection = new OleDbConnection(_connectString))
+            {
+                dbConnection.Open();
+                _dbData = new List<List<string>>();
+                List<string> book = new List<string>();
+                OleDbCommand selectCommand = new OleDbCommand("SELECT * FROM Books", dbConnection);
+                OleDbDataReader reader = selectCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    book = new List<string>();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        book.Add(reader[i].ToString());
+                    }
+                    _dbData.Add(book);
+                }
+            }
+        }
+
+        private void DeleteRecordFromDB()
         {
             using (OleDbConnection dbConnection = new OleDbConnection(_connectString))
             {
                 dbConnection.Open();
                 for (int i = 0; i < _listOfBooks.Count; i++)
                 {
-                    string deleteQuery = "DELETE FROM Books WHERE ID = (SELECT MAX(ID) FROM Books)";
+                    string deleteQuery = "DELETE * FROM Books WHERE ID = (SELECT MAX(ID) FROM Books)";
                     OleDbCommand deleteCommand = new OleDbCommand(deleteQuery, dbConnection);
                     deleteCommand.ExecuteNonQuery();
                 }
 
+            }
+        }
+
+        private void RestoreDatabaseData()
+        {
+            using (OleDbConnection dbConnection = new OleDbConnection(_connectString))
+            {
+                dbConnection.Open();
+                int i = 1;
+                foreach (List<string> Book in _dbData)
+                {
+                    string insertQuery = $"INSERT INTO Books (Id, Author, Title, ISDN, Price) VALUES ({i},'{Book[1]}','{Book[2]}','{Book[3]}',{Convert.ToDecimal(Book[4])})";
+                    OleDbCommand insertCommand = new OleDbCommand(insertQuery, dbConnection);
+                    insertCommand.ExecuteNonQuery();
+                    i++;
+                }
             }
         }
 
