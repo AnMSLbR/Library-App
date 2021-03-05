@@ -42,7 +42,6 @@ namespace Library.Tests
             RestoreDatabaseData();
             CheckResultThrowingExceptionWriteBooksComplete();
             CheckResultThrowingExceptionReadBooksComplete();
-            DeleteRecordFromDB();
         }
 
         private void FillListOfBooks()
