@@ -31,7 +31,7 @@ namespace PluginDataSourceExcel
         /// Запись в таблицу Excel.
         /// </summary>
         /// <param name="listOfBooks">Список книг типа <c>List<List<string>></c>.</param>
-        public void WriteBooks(List<List<string>> listOfBooks)
+        public bool WriteBooks(List<List<string>> listOfBooks)
         {
             using (ExcelPackage excelPackage = new ExcelPackage())
             {
@@ -56,8 +56,29 @@ namespace PluginDataSourceExcel
                 catch (Exception ex)
                 {
                     _onError?.Invoke(this, new EventArgsString("Невозможно сохранить книги в таблицу Excel - прерывание по исключению:" + "\n" + ex.Message));
+                    return false;
                 }
             }
+            return true;
+        }
+        /// <summary>
+        /// Обновление списка книг.
+        /// </summary>
+        /// <param name="listOfBooks"></param>
+        public bool UpdateBooks(List<List<string>> listOfBooks)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Удаление книги
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public bool DeleteBook(string Id)
+        {
+
+            return false;
         }
         /// <summary>
         /// Чтение из таблицы Excel.

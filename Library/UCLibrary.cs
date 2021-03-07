@@ -120,11 +120,10 @@ namespace Library
         {
             FormLoadPlugin loadPlugin = new FormLoadPlugin(_plugin);
             loadPlugin.OnError += new EventHandler<EventArgsString>(catchError);
-            DialogResult result = loadPlugin.ShowDialog();
-            if (result == DialogResult.OK && _checkChanges == true)
-            {
-                InvokeSaveRequest();
-            }
+            loadPlugin.ShowDialog();
+            if (loadPlugin.DialogResult != DialogResult.OK)
+                return;
+
             _plugin = loadPlugin.Plugin;
             if (_plugin != null)
             {
@@ -133,16 +132,15 @@ namespace Library
             }
         }
 
-        private void InvokeSaveRequest()
-        {
-            DialogResult result = MessageBox.Show("Сохранить изменения?", "Сохранить", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-                SaveChanges();
-        }
 
         private void SaveChanges()
         {
-             _plugin.WriteBooks(Books.BooksToList(_books));        
+            List<Book> listBooks = _books.BooksList.Where(x=> x.IsChange).ToList();
+            if (listBooks != null && listBooks.Count > 0)
+            {
+                Books books = new Books(listBooks);
+                _plugin.UpdateBooks(Books.BooksToList(books));
+            }
         }
 
         private void CreateBook()
@@ -180,12 +178,14 @@ namespace Library
             DialogResult result = MessageBox.Show("Вы действительно хотите удалить книгу?", "Удалить", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
+                string Id = labelId.Text;
+                if (!_plugin.DeleteBook(Id))
+                    return;
                 _books.BooksList.Remove(_books.BooksList[listView.SelectedIndices[0]]);
                 listView.SelectedItems[0].Remove();
                 ClearInformation();
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
-                _checkChanges = true;
             }
         }
 
@@ -232,6 +232,7 @@ namespace Library
             textTitle.Text = string.Empty;
             textISDN.Text = string.Empty;
             textPrice.Text = string.Empty;
+            labelId.Text = string.Empty;
         }
 
         private void UpdateInformation(Book book)
@@ -240,6 +241,7 @@ namespace Library
             textTitle.Text = book.Title;
             textISDN.Text = book.ISDN;
             textPrice.Text = Convert.ToString(book.Price);
+            labelId.Text = book.Id;
         }
 
         /// <summary>

@@ -17,10 +17,29 @@ namespace DataSource
         string DescriptionPlugin { get; }
 
 
-        void WriteBooks(List<List<string>> listOfBooks);
+        /// <summary>
+        /// Запись (добавление) списка книг
+        /// </summary>
+        /// <param name="listOfBooks"></param>
+        /// <returns></returns>
+        bool WriteBooks(List<List<string>> listOfBooks);
+
+        /// <summary>
+        /// Обновление списка книг.
+        /// </summary>
+        /// <param name="listOfBooks"></param>
+        bool UpdateBooks(List<List<string>> listOfBooks);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        bool DeleteBook(string Id);
+
         List<List<string>> ReadBooks();
+
         event EventHandler<EventArgsString> OnError;
-        
-        
+
     }
 }

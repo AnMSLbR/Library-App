@@ -48,6 +48,8 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelId = new System.Windows.Forms.Label();
             this.panelInformation.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -160,6 +162,8 @@
             // 
             this.panelInformation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(85)))), ((int)(((byte)(85)))));
             this.panelInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelInformation.Controls.Add(this.label1);
+            this.panelInformation.Controls.Add(this.labelId);
             this.panelInformation.Controls.Add(this.textPrice);
             this.panelInformation.Controls.Add(this.labelAuthor);
             this.panelInformation.Controls.Add(this.labelPrice);
@@ -293,6 +297,28 @@
             this.openFileDialog.Filter = "XML(*.xml)|*.xml|MS Access(*.accdb)|*.accdb";
             this.openFileDialog.InitialDirectory = "D:\\VS\\Common7\\IDE\\Files";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.ForeColor = System.Drawing.Color.Gainsboro;
+            this.label1.Location = new System.Drawing.Point(26, 236);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(27, 18);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Id:";
+            // 
+            // labelId
+            // 
+            this.labelId.AutoSize = true;
+            this.labelId.Font = new System.Drawing.Font("Comic Sans MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelId.ForeColor = System.Drawing.Color.Gainsboro;
+            this.labelId.Location = new System.Drawing.Point(81, 236);
+            this.labelId.Name = "labelId";
+            this.labelId.Size = new System.Drawing.Size(53, 18);
+            this.labelId.TabIndex = 9;
+            this.labelId.Text = "labelId";
+            // 
             // UCLibrary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -337,5 +363,7 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.ToolStripMenuItem loadPluginToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelId;
     }
 }

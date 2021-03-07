@@ -30,7 +30,7 @@ namespace PluginDataSourceXML
         /// Запись в XML файл.
         /// </summary>
         /// <param name="listOfBooks">Список книг типа <c>List<List<string>></c>.</param>
-        public void WriteBooks(List<List<string>> listOfBooks)
+        public bool WriteBooks(List<List<string>> listOfBooks)
         {
             try
             {
@@ -43,7 +43,28 @@ namespace PluginDataSourceXML
             catch (Exception ex)
             {
                 _onError?.Invoke(this, new EventArgsString("Невозможно сохранить книги в XML файл - прерывание по исключению:" + "\n" + ex.Message));
+                return false;
             }
+            return true;
+        }
+        /// <summary>
+        /// Обновление списка книг.
+        /// </summary>
+        /// <param name="listOfBooks"></param>
+        public bool UpdateBooks(List<List<string>> listOfBooks)
+        {
+            return false;
+        }
+        /// <summary>
+
+        /// Удаление книги
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public bool DeleteBook(string Id)
+        {
+
+            return false;
         }
         /// <summary>
         /// Чтение из XML файла.

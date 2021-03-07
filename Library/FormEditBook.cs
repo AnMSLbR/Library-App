@@ -31,7 +31,7 @@ namespace Library
             textBoxAuthor.Text = _book.Author;
             textBoxTitle.Text = _book.Title;
             textBoxISDN.Text = _book.ISDN;
-            numericUpDownPrice.Value = _book.Price;
+            numericUpDownPrice.Value = Convert.ToDecimal(_book.Price);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -48,19 +48,21 @@ namespace Library
         {
             try
             {
-                _book.Author = textBoxAuthor.Text;
-                _book.Title = textBoxTitle.Text;
-                _book.ISDN = textBoxISDN.Text;
-                _book.Price = numericUpDownPrice.Value;
                 if (string.IsNullOrWhiteSpace(textBoxAuthor.Text) || string.IsNullOrWhiteSpace(textBoxTitle.Text) || string.IsNullOrWhiteSpace(textBoxISDN.Text) || numericUpDownPrice.Value == 0)
                 {
                     MessageBox.Show("Заполните все поля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
-                else
-                {
-                    this.Close();
-                    DialogResult = DialogResult.OK;
-                }
+
+                _book.CheckChange(textBoxAuthor.Text, textBoxTitle.Text, textBoxISDN.Text, Convert.ToString(numericUpDownPrice.Value));
+
+                _book.Author = textBoxAuthor.Text;
+                _book.Title = textBoxTitle.Text;
+                _book.ISDN = textBoxISDN.Text;
+                _book.Price = Convert.ToString(numericUpDownPrice.Value);
+
+                this.Close();
+                DialogResult = DialogResult.OK;
             }
             catch (Exception ex)
             {

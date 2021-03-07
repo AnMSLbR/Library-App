@@ -16,74 +16,110 @@ namespace PluginDataSourceAccess
     /// </summary>
     public class DataSourceAccess : IDataSource
     {
-        EventHandler<EventArgsString> _onError;
         IDataBase _db = new DataBase();
         private string _connectString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=..\..\..\DataBases\Books.mdb;";
+        public DataSourceAccess() { }
+
+
+        public DataSourceAccess(IDataBase db)
+        {
+            this._db = db;
+        }
+
+        private OleDbConnection OpenConnectDB()
+        {
+
+            OleDbConnection con = new OleDbConnection(_connectString);
+            try
+            {
+                con.Open();
+            }
+            catch (Exception ex)
+            {
+                OnError?.Invoke(this, new EventArgsString("При открытии соединения к БД Access вызвано исключение\n" + ex.Message));
+                return null;
+            }
+            return con;
+        }
+
+        #region Реализация интерфейса IDataSource
         /// <summary>
         /// Содержит название плагина.
         /// </summary>
         public string NamePlugin { get { return "PluginDataSourceAccess"; } }
+
         /// <summary>
         /// Содержит описание плагина.
         /// </summary>
         public string DescriptionPlugin { get { return "Плагин для записи и чтения из MS Access"; } }
 
-        public DataSourceAccess() { }
-        public DataSourceAccess(IDataBase db)
-        {
-            this._db = db;
-        }
         /// <summary>
-        /// Запись в базу данных MS Access.
+        /// Запись (добавление) списка книг
         /// </summary>
-        /// <param name="listOfBooks">Список книг типа <c>List<List<string>></c>.</param>
-        public void WriteBooks(List<List<string>> listOfBooks)
+        /// <param name="listOfBooks"></param>
+        /// <returns></returns>
+        public bool WriteBooks(List<List<string>> listOfBooks)
         {
-            try
+            using (OleDbConnection con = OpenConnectDB())
             {
-                _db.OpenConnection(_connectString);
-                string query;
-                int id = 1;
-                int recordsCount = Convert.ToInt32(_db.Retrieve("SELECT COUNT(Id) FROM Books")[0]);
-                List<string> book = new List<string>();
-                foreach (List<string> Book in listOfBooks)
+                try
                 {
-                    query = $"SELECT * FROM Books WHERE [Id] = {id} AND [Author] = '{Book[0]}' AND [Title] = '{Book[1]}' AND [ISDN] = '{Book[2]}' AND [Price] = {Convert.ToDecimal(Book[3])}";
-                    book = _db.Retrieve(query);
-                    if ((book.Count == 0) && (id <= recordsCount))
+                    OleDbCommand com = con.CreateCommand();
+                    foreach (List<string> item in listOfBooks)
                     {
-                        query = $"UPDATE Books SET [Author] = '{Book[0]}', [Title] = '{Book[1]}', [ISDN] = '{Book[2]}', [Price] = {Convert.ToDecimal(Book[3])} WHERE [Id] = {id}";
-                        book.Clear();
-                        _db.Modify(query);
-                    }
-                    else if ((book.Count == 0) && (id > recordsCount))
-                    {
-                        query = $"INSERT INTO Books (Id, Author, Title, ISDN, Price) VALUES ({id}, '{Book[0]}', '{Book[1]}', '{Book[2]}', {Convert.ToDecimal(Book[3])})";
-                        book.Clear();
-                        _db.Modify(query);
-                    }
-                    else
-                    {
-                        book.Clear();
-                        id++;
-                        continue;
-                    }
-                    id++;
-                }
-                if (listOfBooks.Count < recordsCount)
-                {
-                    for (int i = 0; i < (recordsCount - listOfBooks.Count); i++)
-                    {
-                        query = $"DELETE * FROM Books WHERE Id = (SELECT MAX(Id) FROM Books)";
-                        _db.Modify(query);
+                        com.CommandText = "INSERT INTO Books (Author, Title, ISDN, Price) VALUES (@Author, @Title, @ISDN, @Price)";
+
+                        com.Parameters.AddWithValue("@Author", item[0]);
+                        com.Parameters.AddWithValue("@Title", item[1]);
+                        com.Parameters.AddWithValue("@ISDN", item[2]);
+                        com.Parameters.AddWithValue("@Price", decimal.Parse(item[3]));
+
+                        com.ExecuteNonQuery();
+                        com.Parameters.Clear();
                     }
                 }
+                catch (Exception ex)
+                {
+                    OnError?.Invoke(this, new EventArgsString("Невозможно записать книги в базе данных - прерывание по исключению:" + "\n" + ex.Message));
+                    return false;
+                }
             }
-            catch (Exception ex)
+            return true;
+        }
+
+        /// <summary>
+        /// Обновление списка книг.
+        /// </summary>
+        /// <param name="listOfBooks"></param>
+        public bool UpdateBooks(List<List<string>> listOfBooks)
+        {
+            using (OleDbConnection con = OpenConnectDB())
             {
-                _onError?.Invoke(this, new EventArgsString("Невозможно сохранить книги в базе данных - прерывание по исключению:" + "\n" + ex.Message));
+                try
+                {
+                    OleDbCommand com = con.CreateCommand();
+                    foreach (List<string> item in listOfBooks)
+                    {
+                        com.CommandText = "UPDATE Books SET Author=?, Title=?, ISDN=?, Price=?" +
+                                          " WHERE Id=?";
+
+                        com.Parameters.AddWithValue("Author", item[1]);
+                        com.Parameters.AddWithValue("Title", item[2]);
+                        com.Parameters.AddWithValue("ISDN", item[3]);
+                        com.Parameters.AddWithValue("Price", decimal.Parse(item[4]));
+                        com.Parameters.AddWithValue("Id", int.Parse(item[0]));
+
+                        com.ExecuteNonQuery();
+                        com.Parameters.Clear();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    OnError?.Invoke(this, new EventArgsString("Невозможно обновить книги в базе данных - прерывание по исключению:" + "\n" + ex.Message));
+                    return false;
+                }
             }
-            _db?.CloseConnection();
+            return true;
         }
         /// <summary>
         /// Чтение из базы данных MS Access.
@@ -93,43 +129,69 @@ namespace PluginDataSourceAccess
         /// </returns>
         public List<List<string>> ReadBooks()
         {
-            List <List<string>> listOfBooks = new List<List<string>>();
-
-            try
+            using (OleDbConnection con = OpenConnectDB())
             {
-                _db.OpenConnection(_connectString);
-                List<string> bookAttributes = _db.Retrieve("SELECT * FROM Books");
-                List<string> book = new List<string>();
-                int k = 0;
-                for (int i = 1; i <= bookAttributes.Count; i++)
+                List<List<string>> listOfBooks = new List<List<string>>();
+                try
                 {
-                    if (i % 5 == 0)
-                        continue;
-                    book.Add(bookAttributes[i]);
-                    k++;
-                    if (k == 4)
+
+                    OleDbCommand com = con.CreateCommand();
+                    com.CommandText = "SELECT * FROM Books";
+
+                    OleDbDataReader rd = com.ExecuteReader();
+                    while (rd.Read())
                     {
-                        k = 0;
+                        string id = Convert.ToString(rd[0]);
+                        string author = Convert.ToString(rd[1]);
+                        string title = Convert.ToString(rd[2]);
+                        string isdn = Convert.ToString(rd[3]);
+                        string price = Convert.ToString(rd[4]);
+
+                        List<string> book = new List<string>() { id, author, title, isdn, price };
                         listOfBooks.Add(book);
-                        book = new List<string>();
                     }
+                    rd.Close();
+
                 }
+                catch (Exception ex)
+                {
+                    OnError?.Invoke(this, new EventArgsString("Невозможно загрузить книги из базы данных - прерывание по исключению:" + "\n" + ex.Message));
+                }
+                return listOfBooks;
             }
-            catch (Exception ex)
+        }
+
+        /// <summary>
+        /// Удаление книги
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public bool DeleteBook(string Id)
+        {
+            using (OleDbConnection con = OpenConnectDB())
             {
-                _onError?.Invoke(this, new EventArgsString("Невозможно загрузить книги из базы данных - прерывание по исключению:" + "\n" + ex.Message));
+                try
+                {
+
+                    OleDbCommand com = con.CreateCommand();
+                    com.CommandText = "DELETE FROM Books WHERE Id = @Id";
+                    com.Parameters.AddWithValue("@Id", Id);
+
+                    com.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    OnError?.Invoke(this, new EventArgsString("Не удалось удалить книгу с Id = "+ Id +" - прерывание по исключению:" + "\n" + ex.Message));
+                    return false;
+                }
+                return true;
             }
-            _db?.CloseConnection();
-            return listOfBooks; 
         }
 
         /// <summary>
         /// Событие - ошибка с передачей строки.
         /// </summary>
-        public event EventHandler<EventArgsString> OnError
-        {
-            add { _onError += value; }
-            remove { _onError -= value; }
-        }
+        public event EventHandler<EventArgsString> OnError;
+        #endregion
     }
 }
